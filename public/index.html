@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#3b82f6" />
+    <meta name="description" content="AI-powered mock interview platform with recording and speech capabilities" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    
+    <!-- Preconnect to external domains for better performance -->
+    <link rel="preconnect" href="https://api.openai.com">
+    <link rel="preconnect" href="https://api.perplexity.ai">
+    
+    <title>AI Mock Interview Platform</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta property="og:title" content="AI Mock Interview Platform" />
+    <meta property="og:description" content="Practice interviews with AI-powered feedback, recording capabilities, and comprehensive study materials" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourusername.github.io/ai-mock-interview-platform" />
+    <meta property="og:image" content="%PUBLIC_URL%/og-image.png" />
+    
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AI Mock Interview Platform" />
+    <meta name="twitter:description" content="Practice interviews with AI-powered feedback" />
+    <meta name="twitter:image" content="%PUBLIC_URL%/og-image.png" />
+    
+    <!-- Keywords for SEO -->
+    <meta name="keywords" content="AI, interview, mock interview, practice, coding interview, technical interview, job preparation, React, TypeScript" />
+    <meta name="author" content="Your Name" />
+    
+    <!-- Robots meta tag -->
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://yourusername.github.io/ai-mock-interview-platform" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    
+
+ style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+      <div style="text-align: center;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">🎯</div>
+        <div style="font-size: 1.5rem; font-weight: bold; color: #374151;">Loading AI Mock Interview...</div>
+        <div style="margin-top: 1rem; color: #6b7280;">Please wait while we prepare your interview experience</div>
+      </div>
+    </div>
+    
+    <script>
+      // Show loading fallback if app takes too long to load
+      setTimeout(function() {
+        if (!document.querySelector('[data-reactroot]')) {
+          document.getElementById('loading-fallback').style.display = 'flex';
+        }
+      }, 3000);
+      
+      // Hide loading fallback when React app loads
+      window.addEventListener('load', function() {
+        const fallback = document.getElementById('loading-fallback');
+        if (fallback) {
+          fallback.style.display = 'none';
+        }
+      });
+
+  </body>
+</html>

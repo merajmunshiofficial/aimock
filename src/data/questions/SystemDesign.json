@@ -1,0 +1,306 @@
+[
+  {
+    "question": "What is system design and why is it important?",
+    "answer": "System design is a broad field that encompasses various principles and concepts essential for creating scalable, efficient, and maintainable systems. It involves making architectural decisions about how different components of a system will interact, how data will be stored and processed, and how the system will handle growth and failures. System design is crucial because it determines the performance, reliability, and scalability characteristics of applications, especially in distributed environments."
+  },
+  {
+    "question": "What is the difference between vertical scaling and horizontal scaling?",
+    "answer": "Vertical scaling (scaling up) involves adding more resources like CPU, RAM, or storage to a single machine to improve performance. It's simpler to implement but has physical limits and potential single points of failure. Horizontal scaling (scaling out) involves adding more machines to distribute the load. While more complex to implement, it offers greater capacity potential, better fault tolerance, and cost-effectiveness using commodity hardware."
+  },
+  {
+    "question": "What is load balancing and what are its main algorithms?",
+    "answer": "Load balancing is the technique of distributing incoming network traffic across multiple servers to ensure no single server becomes overwhelmed. Main algorithms include: Round Robin (sequential distribution), Least Connections (routes to server with fewest active connections), Least Response Time (routes to fastest server), IP Hash (uses client IP to determine server), Weighted Round Robin (assigns weights based on server capacity), and Random (distributes requests randomly)."
+  },
+  {
+    "question": "What is microservices architecture and what are its key characteristics?",
+    "answer": "Microservices architecture structures an application as a collection of loosely coupled services, each performing specific business functions. Key characteristics include: independently deployable services, decentralized data management, technology agnostic approach, independent scalability, resilience to individual service failures, API-driven communication, and support for continuous delivery and DevOps practices."
+  },
+  {
+    "question": "What are the different types of databases and their use cases?",
+    "answer": "Database types include: Relational databases (MySQL, PostgreSQL) for structured data with ACID compliance; NoSQL databases including document stores (MongoDB), key-value stores (Redis), column-family (Cassandra), and graph databases (Neo4j) for unstructured data; Time-series databases (InfluxDB) for time-stamped data; Spatial databases (PostGIS) for geographic data; and NewSQL databases (CockroachDB) combining SQL ACID guarantees with NoSQL scalability."
+  },
+  {
+    "question": "What is caching and what are the main caching strategies?",
+    "answer": "Caching stores frequently accessed data in temporary storage to improve performance and reduce latency. Main strategies include: Cache Aside (lazy loading - check cache first, load from source if miss), Write-Through (write to cache and data store simultaneously), Write-Behind/Write-Back (write to cache first, then asynchronously to data store), and Read-Through (cache automatically loads from data store on miss). Common eviction policies include LRU, FIFO, and LFU."
+  },
+  {
+    "question": "What is the CAP Theorem and what are its implications?",
+    "answer": "The CAP Theorem states that in the presence of network partitions, a distributed system can only guarantee two of three properties: Consistency (all nodes see the same data simultaneously), Availability (system remains operational), and Partition Tolerance (system continues despite network failures). This leads to trade-offs: CP systems prioritize consistency over availability, AP systems prioritize availability over consistency, and CA systems cannot exist in truly distributed environments."
+  },
+  {
+    "question": "What are ACID properties in database transactions?",
+    "answer": "ACID represents four key properties ensuring reliable database transactions: Atomicity (transaction is all-or-nothing), Consistency (transaction moves database from one valid state to another), Isolation (transactions operate independently without interference), and Durability (committed transactions persist even after system failure). These properties are essential for maintaining data integrity in relational database systems."
+  },
+  {
+    "question": "What is consistent hashing and why is it useful?",
+    "answer": "Consistent hashing is a technique for distributing data across nodes in a distributed system while minimizing data movement when nodes are added or removed. It maps both data items and nodes to positions on a circular hash ring. Data is assigned to the first node clockwise from its position. When nodes change, only keys between the new/removed node and its predecessor need redistribution, making it ideal for distributed caching and load balancing."
+  },
+  {
+    "question": "What is rate limiting and what are common implementation strategies?",
+    "answer": "Rate limiting controls the number of requests a client can make within a specified time frame to prevent abuse and ensure fair usage. Common strategies include: Fixed Window (count requests in fixed time periods), Sliding Window (track requests over sliding time frame), Token Bucket (allow bursts up to limit, refill tokens at steady rate), and Leaky Bucket (process requests at constant rate). Implementation typically returns HTTP 429 when limits are exceeded."
+  },
+  {
+    "question": "What is a Single Point of Failure (SPOF) and how can it be mitigated?",
+    "answer": "A Single Point of Failure is any component that, if it fails, causes the entire system to stop functioning. Examples include single servers, network switches, databases, or load balancers. Mitigation strategies include: implementing redundancy with backup components, using failover mechanisms, load balancing across multiple instances, clustering systems, regular backups, and comprehensive monitoring with alerts for early failure detection."
+  },
+  {
+    "question": "What is fault tolerance and what techniques are used to achieve it?",
+    "answer": "Fault tolerance is a system's ability to continue operating correctly despite component failures. Key techniques include: redundancy (active-active or active-passive), error detection and correction, graceful degradation (reduced functionality rather than complete failure), failover mechanisms, data replication across locations, checkpointing (saving system state), and designing architecture with fault tolerance in mind using microservices and distributed systems."
+  },
+  {
+    "question": "What are consensus algorithms and why are they important?",
+    "answer": "Consensus algorithms are protocols enabling multiple nodes in a distributed system to agree on a single value or state despite failures or network issues. Important algorithms include: Paxos (theoretically robust but complex), Raft (leader-follower model, easier to understand), Byzantine Fault Tolerance for malicious failures, Proof of Work/Stake for blockchain, and leader election algorithms. They're crucial for maintaining consistency in distributed databases and coordination services."
+  },
+  {
+    "question": "What are gossip protocols and how do they work?",
+    "answer": "Gossip protocols are decentralized communication protocols where nodes periodically exchange information with randomly selected peers, similar to how gossip spreads socially. Types include push gossip (nodes send state to peers), pull gossip (nodes request state from peers), and hybrid approaches. They're used in distributed databases like Cassandra, service discovery, configuration management, and fault detection, offering scalability, simplicity, and fault tolerance."
+  },
+  {
+    "question": "What is service discovery and what are its main patterns?",
+    "answer": "Service discovery enables services to find and communicate with each other dynamically in distributed systems. Main patterns include: Client-Side Discovery (client queries service registry and calls service directly) and Server-Side Discovery (client calls load balancer which discovers and routes to service). Key components include service registries (Consul, Eureka, Zookeeper), health checks, and integration with load balancing for optimal traffic distribution."
+  },
+  {
+    "question": "What are the key principles of API design?",
+    "answer": "Key API design principles include: Consistency in naming conventions and response structures, Simplicity to avoid unnecessary complexity, proper Versioning strategies (URL or header-based), Statelessness for scalability, comprehensive Error Handling with standard HTTP status codes, appropriate data formats (JSON, XML, Protocol Buffers), robust authentication and security measures, and thorough documentation with examples and interactive tools like Swagger/OpenAPI."
+  },
+  {
+    "question": "What is disaster recovery and what are the main strategies?",
+    "answer": "Disaster recovery involves strategies and procedures to recover IT infrastructure after disasters. Key components include: Recovery Time Objective (RTO - maximum downtime) and Recovery Point Objective (RPO - maximum data loss). Strategies include Cold Site (basic infrastructure requiring setup time), Warm Site (partially equipped, quick activation), Hot Site (fully equipped, immediate takeover), and Cloud-Based DR for flexibility. Regular testing and maintenance are essential."
+  },
+  {
+    "question": "What is distributed tracing and why is it important?",
+    "answer": "Distributed tracing monitors requests as they flow through distributed systems, providing visibility into performance and interactions between services. Key concepts include traces (complete request journey), spans (individual operations with timing and metadata), context propagation (carrying trace information across services), and sampling (collecting subset of traces). It's essential for debugging, performance optimization, and understanding service dependencies in microservices architectures."
+  },
+  {
+    "question": "What is a Content Delivery Network (CDN) and how does it work?",
+    "answer": "A CDN is a distributed network of servers strategically located globally to deliver content efficiently to users. It works by caching static content (images, videos, scripts) on edge servers close to users, reducing latency and improving load times. CDNs provide benefits like improved performance, scalability, reliability, and security features including DDoS protection. They use geographic distribution and load balancing to optimize content delivery."
+  },
+  {
+    "question": "What is the difference between proxy servers and reverse proxies?",
+    "answer": "Proxy servers act as intermediaries between clients and the internet, primarily serving client needs by providing anonymity, content filtering, caching, and access control. Reverse proxies act as intermediaries for servers, receiving client requests and forwarding them to backend servers. They provide load balancing, SSL termination, caching server responses, security protection, and compression. Proxies hide client IPs from servers, while reverse proxies hide server IPs from clients."
+  },
+  {
+    "question": "What is the Domain Name System (DNS) and how does it work?",
+    "answer": "DNS translates human-readable domain names into IP addresses. It works hierarchically: root level (managed by root name servers), top-level domains (.com, .org), second-level domains (example.com), and subdomains (www.example.com). The resolution process involves local cache checks, recursive DNS resolver queries, root name server queries, TLD server queries, and finally authoritative name server queries. DNS supports various record types like A, AAAA, CNAME, MX, and NS records."
+  },
+  {
+    "question": "What are the different types of caching and their use cases?",
+    "answer": "Caching types include: Memory Caching (RAM storage for fast access, like Redis/Memcached), Disk Caching (slower but larger capacity), Browser Caching (client-side for web assets), CDN Caching (geographic distribution), and Database Caching (query result storage). Use cases vary: in-memory for real-time applications, browser caching for web performance, CDN for global content delivery, and database caching for reducing query load and improving response times."
+  },
+  {
+    "question": "What is distributed caching and what are its benefits?",
+    "answer": "Distributed caching spreads cached data across multiple servers/nodes, enabling applications to scale while maintaining performance. Benefits include improved scalability (add more cache servers), fault tolerance (reroute if one server fails), and enhanced performance (data closer to users). Common solutions include Redis, Memcached, Hazelcast, and Apache Ignite. Strategies include cache-aside, read-through, write-through, and write-back, with challenges in data consistency and cache invalidation."
+  },
+  {
+    "question": "What are the different load balancing algorithms and their characteristics?",
+    "answer": "Load balancing algorithms include: Round Robin (sequential distribution, simple but may not account for server capacity), Least Connections (routes to server with fewest active connections), Least Response Time (routes to fastest responding server), IP Hash (consistent routing based on client IP), Weighted Round Robin (considers server capacity differences), and Random (simple random distribution). Choice depends on application requirements, server capacities, and desired traffic distribution patterns."
+  },
+  {
+    "question": "What is the difference between SQL and NoSQL databases?",
+    "answer": "SQL databases are relational with structured schemas, use SQL for queries, provide ACID compliance, and are best for complex queries and structured data (MySQL, PostgreSQL). NoSQL databases are non-relational with flexible schemas, use various query languages, often prioritize availability over consistency, and excel with unstructured data and horizontal scaling. NoSQL types include document stores (MongoDB), key-value (Redis), column-family (Cassandra), and graph databases (Neo4j)."
+  },
+  {
+    "question": "What are database indexes and how do they improve performance?",
+    "answer": "Database indexes are data structures that improve query performance by creating efficient access paths to data, similar to book indexes. Types include single-column, composite (multiple columns), unique, full-text, and spatial indexes. They work using structures like B-trees or hash tables to quickly locate matching rows without scanning entire tables. Trade-offs include faster reads but slower writes (due to index maintenance) and additional storage requirements."
+  },
+  {
+    "question": "What are heartbeats in system design?",
+    "answer": "Heartbeats are periodic signals sent between system components to indicate operational status. They're used for health monitoring (detecting failed components), load balancing (routing traffic only to healthy instances), and failover mechanisms (triggering backup systems). Implementation considerations include appropriate frequency (balance between network overhead and failure detection speed), timeout periods, and payload content (simple signals vs. detailed status information)."
+  },
+  {
+    "question": "What is the circuit breaker pattern and how does it work?",
+    "answer": "The circuit breaker pattern prevents cascading failures by monitoring service calls and blocking requests to failing services. It has three states: Closed (normal operation, monitoring failures), Open (blocking requests when failure threshold exceeded, allowing service recovery), and Half-Open (testing service recovery with limited requests). Benefits include improved system resilience, reduced latency (immediate failures vs. timeouts), and graceful degradation. Implementation includes configurable thresholds and fallback mechanisms."
+  },
+  {
+    "question": "What is idempotency and why is it important in system design?",
+    "answer": "Idempotency means performing the same operation multiple times has the same effect as performing it once. In HTTP, GET, PUT, and DELETE are idempotent, while POST typically isn't. It's crucial for reliable systems because it enables safe retries during network failures, simplifies error handling, and improves user experience. Implementation strategies include idempotency keys, careful resource state management, and consistent response handling for repeated requests."
+  },
+  {
+    "question": "What is database scaling and what are the main approaches?",
+    "answer": "Database scaling increases database capacity to handle growing loads. Vertical scaling adds resources (CPU, RAM) to existing servers - simpler but limited by hardware constraints. Horizontal scaling adds more servers through techniques like sharding (partitioning data across databases), replication (master-slave or multi-master), partitioning, caching layers, and Database-as-a-Service solutions. Choice depends on data volume, consistency requirements, and budget constraints."
+  },
+  {
+    "question": "What is data redundancy and how should it be managed?",
+    "answer": "Data redundancy is the duplication of data within storage systems. Intentional redundancy (backups, replication) improves availability and performance, while unintentional redundancy wastes storage and creates consistency issues. Management strategies include database normalization, data deduplication, governance policies, unique identifiers, and controlled redundancy for performance (like caching). The key is balancing redundancy benefits (availability, performance) with costs (storage, complexity)."
+  },
+  {
+    "question": "What is database sharding and what are the different strategies?",
+    "answer": "Database sharding horizontally partitions data across multiple database instances to improve scalability and performance. Strategies include: Range-based (partition by value ranges), Hash-based (use hash function to determine shard), and Directory-based (lookup table mapping). Benefits include improved scalability, performance, and fault isolation. Challenges include complexity, rebalancing needs, cross-shard queries, and careful shard key selection for balanced distribution."
+  },
+  {
+    "question": "What are the different database architectures?",
+    "answer": "Database architectures include: Single Database (simple but limited scalability), Client-Server (centralized server with multiple clients), Distributed Database (multiple interconnected databases across locations), NoSQL (flexible schemas for unstructured data), Data Warehousing (optimized for analytics), Microservices with Databases (each service has its own database), Multi-Model (supports multiple data models), and Cloud Database (hosted solutions with managed scaling)."
+  },
+  {
+    "question": "What is failover and what are its types?",
+    "answer": "Failover is the automatic switching to a standby system when the primary system fails, ensuring continuous service availability. Types include: Active-Passive (standby system activates only on primary failure) and Active-Active (both systems handle requests simultaneously). Implementation requires health checks, data synchronization, automatic or manual triggering, and eventual failback procedures. Benefits include high availability and minimized downtime, but involve complexity and cost trade-offs."
+  },
+  {
+    "question": "What is a Bloom filter and how does it work?",
+    "answer": "A Bloom filter is a space-efficient probabilistic data structure that tests set membership. It uses a bit array and multiple hash functions to map elements to bit positions. When adding elements, corresponding bits are set to 1. For membership queries, if all corresponding bits are 1, the element may be in the set (possible false positive); if any bit is 0, the element is definitely not in the set (no false negatives). Used in web caching, databases, and network applications for efficient preliminary filtering."
+  },
+  {
+    "question": "What are message queues and what are their benefits?",
+    "answer": "Message queues facilitate asynchronous communication between system components by storing messages until they're processed. Key components include producers (message senders), consumers (message receivers), queues (message storage), and message brokers (routing and management). Benefits include scalability, reliability, load balancing, decoupling of components, and fault tolerance. Common systems include RabbitMQ, Apache Kafka, Amazon SQS, and Redis. Use cases include microservices communication, event-driven architectures, and background processing."
+  },
+  {
+    "question": "What are WebSockets and when should they be used?",
+    "answer": "WebSockets provide full-duplex communication over a single, persistent connection between clients and servers, enabling real-time, two-way data exchange. They're ideal for applications requiring low latency and high-frequency updates like chat systems, online gaming, live sports updates, and collaborative tools. Benefits include reduced latency (no repeated handshakes), efficient data transfer, and real-time capabilities. Design considerations include scalability, connection management, security, and fallback mechanisms for unsupported environments."
+  },
+  {
+    "question": "What are checksums and how are they used for data integrity?",
+    "answer": "Checksums are small data values derived from larger datasets using algorithms like MD5, SHA-1, SHA-256, or CRC32. They verify data integrity by comparing calculated checksums with original values - matching checksums indicate intact data, while mismatches suggest corruption. Applications include data transmission error detection, file integrity verification, digital signatures, and software distribution validation. Limitations include collision vulnerability (different data producing same checksum) and inability to catch all corruption types."
+  },
+  {
+    "question": "What is an API Gateway and what functions does it serve?",
+    "answer": "An API Gateway acts as a single entry point for clients accessing backend services in microservices architectures. Key functions include request routing to appropriate services, load balancing across service instances, authentication and authorization, rate limiting, response caching, request/response transformation, monitoring and logging, security enforcement (SSL termination), and service discovery. Popular solutions include AWS API Gateway, Kong, NGINX, and Apigee, each offering various features for different use cases."
+  },
+  {
+    "question": "What are the key considerations for implementing microservices?",
+    "answer": "Key microservices considerations include: defining clear service boundaries using Domain-Driven Design, implementing decentralized data management (database per service), designing RESTful APIs with proper versioning, choosing appropriate communication patterns (synchronous vs asynchronous), implementing centralized authentication/authorization, setting up comprehensive monitoring and logging, automating deployment with CI/CD pipelines, ensuring security with HTTPS and rate limiting, implementing resilience patterns like circuit breakers, and fostering cross-functional DevOps teams."
+  },
+  {
+    "question": "What is distributed locking and what are common implementation approaches?",
+    "answer": "Distributed locking ensures only one instance can access a resource or perform an operation across distributed systems. Key concepts include lock acquisition/release, timeouts to prevent deadlocks, reentrancy support, and fairness mechanisms. Common solutions include Zookeeper (using znodes for reliable coordination), Redis (with SETNX commands and libraries like Redisson), etcd (with lease-based locks), Consul (built-in locking features), and database-based locks (using transactions). Best practices include short lock durations, exponential backoff for retries, and graceful failure handling."
+  },
+  {
+    "question": "What are common trade-offs in system design?",
+    "answer": "System design involves numerous trade-offs including: Consistency vs Availability (CAP theorem), Latency vs Throughput (fast individual responses vs high volume processing), Cost vs Quality (budget constraints vs performance/reliability), Scalability vs Complexity (handling growth vs system complexity), Security vs Performance (protection measures vs speed), Flexibility vs Stability (adaptability vs reliability), and Innovation vs Reliability (cutting-edge features vs proven solutions). Understanding these trade-offs is crucial for making informed architectural decisions based on specific requirements and constraints."
+  },
+  {
+    "question": "What is the difference between stateful and stateless design?",
+    "answer": "Stateless design treats each request independently without storing client state between requests, making systems easier to scale, more fault-tolerant, and simpler to manage. Examples include RESTful APIs. Stateful design maintains client state across requests, enabling personalized experiences and context awareness but adding complexity in session management, resource requirements, and scaling challenges. Examples include traditional web applications with sessions. Choice depends on requirements for personalization, scalability needs, and system complexity tolerance."
+  },
+  {
+    "question": "What is the difference between batch processing and stream processing?",
+    "answer": "Batch processing collects and processes large volumes of data at scheduled intervals with high latency but efficient resource utilization, suitable for ETL processes, reporting, and historical analysis. Stream processing handles data continuously in real-time as it arrives, providing low latency and immediate insights but requiring more complex infrastructure. Examples include real-time analytics, fraud detection, and event-driven applications. Some systems use hybrid approaches combining both paradigms based on different data processing needs."
+  },
+  {
+    "question": "What is the difference between strong consistency and eventual consistency?",
+    "answer": "Strong consistency guarantees that all reads return the most recent write immediately after acknowledgment, simplifying application logic but potentially increasing latency and reducing availability during network partitions. Eventual consistency guarantees that all replicas will converge to the same state given enough time without new updates, providing higher availability and performance but requiring applications to handle temporary inconsistencies. Choice depends on application requirements for data accuracy, performance, and availability priorities."
+  },
+  {
+    "question": "What are read-through and write-through caching strategies?",
+    "answer": "Read-through cache automatically fetches data from the underlying data store when a cache miss occurs, populating the cache and returning data to the requester. It simplifies application logic and ensures frequently accessed data is cached, but may have delays on cache misses. Write-through cache writes data to both cache and data store simultaneously, ensuring consistency between cache and database but potentially introducing write latency. Both strategies help optimize different aspects of data access patterns and consistency requirements."
+  },
+  {
+    "question": "What is the difference between push and pull architectures?",
+    "answer": "Push architecture proactively sends data from producers to consumers as soon as it becomes available, providing real-time updates and reduced latency but potentially overwhelming consumers and requiring complex backpressure management. Examples include push notifications and streaming services. Pull architecture has consumers request data when needed, giving them control over data flow and reducing unnecessary data transfer but potentially introducing higher latency and inefficiency for time-sensitive applications. Many systems use hybrid approaches combining both patterns."
+  },
+  {
+    "question": "What is the difference between long-polling and WebSockets?",
+    "answer": "Long-polling uses standard HTTP requests where the server holds the request open until new data is available, then responds and the client immediately sends a new request. It's compatible with existing infrastructure but has higher latency and overhead from repeated request-response cycles. WebSockets establish a persistent, full-duplex connection allowing real-time, bidirectional communication with lower latency and overhead. They're more efficient for frequent updates but require WebSocket-capable infrastructure and more complex connection management."
+  },
+  {
+    "question": "What is the difference between REST and RPC in API design?",
+    "answer": "REST (Representational State Transfer) is resource-oriented and uses standard HTTP methods (GET, POST, PUT, DELETE) to perform operations on resources identified by URLs. It's stateless and supports HTTP caching. RPC (Remote Procedure Call) is procedure-oriented, allowing programs to execute procedures on remote servers as if they were local calls. REST focuses on resources and uniform interfaces, while RPC focuses on invoking functions. REST is commonly used for web services and public APIs, while RPC is often used for internal services and microservices where performance is critical."
+  },
+  {
+    "question": "What is the difference between synchronous and asynchronous communication?",
+    "answer": "Synchronous communication occurs in real-time where participants engage simultaneously, such as phone calls, video conferencing, and live chat sessions. It provides immediate feedback but requires coordination as all parties must be available at the same time. Asynchronous communication doesn't require simultaneous participation, allowing messages to be sent and received at different times, such as email, text messages, and forum posts. It offers flexibility and allows for more thoughtful responses but involves delayed feedback. Many systems use a combination of both methods to optimize communication effectiveness."
+  },
+  {
+    "question": "What is the difference between latency and throughput?",
+    "answer": "Latency refers to the time it takes for a data packet to travel from source to destination, typically measured in milliseconds. It includes propagation delay, transmission delay, processing delay, and queuing delay. Throughput refers to the amount of data successfully transmitted over a network in a given time, usually measured in bits per second (bps). Latency is about the speed of individual packets, while throughput is about the volume of data transmitted over time. Applications sensitive to latency (like gaming) prioritize low latency, while applications transferring large files benefit more from high throughput."
+  },
+  {
+    "question": "What is client-server architecture and what are its main characteristics?",
+    "answer": "Client-server architecture is a computing model that divides tasks between service providers (servers) and service requesters (clients). Key characteristics include separation of concerns (UI from data storage), scalability (servers can be scaled up or out), centralized management, and resource sharing. It includes two-tier architecture (client communicates directly with server), three-tier architecture (adds application server layer), and multi-tier architecture (multiple layers for complex systems). Advantages include modularity, improved performance, and enhanced security, while disadvantages include potential single points of failure, network dependency, and increased complexity."
+  },
+  {
+    "question": "What is microservices architecture and what are its key benefits and challenges?",
+    "answer": "Microservices architecture structures applications as collections of loosely coupled services, each performing specific business functions. Key benefits include independently deployable services, decentralized data management, technology agnostic approach, independent scalability, resilience to individual service failures, API-driven communication, and support for continuous delivery. Challenges include complexity in managing multiple services, data consistency across services, network latency, deployment overhead, and the need for robust monitoring and service discovery. Best practices include defining clear service boundaries, implementing proper security, using containerization, and establishing comprehensive monitoring."
+  },
+  {
+    "question": "What is serverless architecture and what are its main advantages and challenges?",
+    "answer": "Serverless architecture is a cloud computing execution model where the cloud provider manages server allocation and provisioning automatically. Applications are built using event-driven, stateless functions that scale automatically. Main advantages include reduced operational overhead, cost efficiency with pay-as-you-go pricing, automatic scalability, and faster time to market. Challenges include cold starts causing latency, vendor lock-in risks, limited execution time constraints, and complexity in debugging and monitoring. Best practices include designing for statelessness, optimizing function size, implementing monitoring, and planning for cold starts."
+  },
+  {
+    "question": "What is event-driven architecture and what are its key components?",
+    "answer": "Event-Driven Architecture (EDA) promotes communication through events - significant changes in state or occurrences that trigger actions. Key components include events (state changes or occurrences), producers (components generating events), consumers (components responding to events), event channels (transmission pathways), and event processing logic. Benefits include scalability, responsiveness, flexibility in adding new consumers, and improved resilience. It's commonly used in microservices, real-time analytics, and IoT applications. Challenges include complexity in managing event flows, event schema evolution, and debugging distributed event systems."
+  },
+  {
+    "question": "What is peer-to-peer (P2P) architecture and what are its types?",
+    "answer": "Peer-to-peer architecture is a decentralized network model where participants have equal privileges and responsibilities, acting as both clients and servers. Key characteristics include decentralization, equal privileges among peers, resource sharing, scalability, and fault tolerance. Types include structured P2P networks (using algorithms like DHT for organization), unstructured P2P networks (random connections), and hybrid P2P networks (combining both approaches). Applications include file sharing (BitTorrent), blockchain and cryptocurrencies, VoIP services, and collaborative platforms. Advantages include cost-effectiveness and enhanced privacy, while challenges include security risks and resource management complexity."
+  },
+  {
+    "question": "How would you design a URL shortener like TinyURL?",
+    "answer": "Design components include: 1) Frontend for URL input, 2) Backend API with RESTful endpoints (POST /shorten, GET /{short_code}), 3) Database storing URL mappings with fields like id, original_url, shortened_url, created_at, and click_count. Key features include URL shortening using Base62 encoding or random string generation, redirection logic, analytics tracking, and user management. Architecture considerations include using load balancers, caching frequently accessed URLs, CDN for performance, and implementing security measures like rate limiting and URL validation. Scalability involves database sharding and horizontal scaling of services."
+  },
+  {
+    "question": "How would you design a text storage service like Pastebin?",
+    "answer": "Design includes: 1) Database schema with snippets table (id, user_id, content, visibility, expiration_date, created_at), 2) User management system, 3) RESTful API (POST /snippets, GET /snippets/{id}, PUT /snippets/{id}, DELETE /snippets/{id}). Key features include visibility options (public, unlisted, private), expiration dates, user authentication, search functionality, and syntax highlighting. Architecture uses web interface, backend server, database storage, and object storage for large content. Security considerations include input validation, HTTPS, access controls, and rate limiting. Additional features include user accounts, collaboration, version control, and mobile responsiveness."
+  },
+  {
+    "question": "How would you design a leaderboard system?",
+    "answer": "Design considerations include: 1) Purpose definition and ranking metrics, 2) UI design with clear layout showing rank, player name, score, and achievements, 3) Visual hierarchy using appropriate fonts and colors, 4) Interactivity with sorting/filtering options and search functionality, 5) Responsive design for various devices. Key features include real-time updates, pagination for large datasets, user engagement through notifications and social sharing, and accessibility compliance. Backend requirements include efficient database design, caching for performance, and APIs for data management. Testing involves usability testing and iterative improvements based on user feedback."
+  },
+  {
+    "question": "How would you design a Content Delivery Network (CDN)?",
+    "answer": "CDN design includes: 1) Global distribution of edge servers for geographic proximity, 2) Origin server holding original content, 3) Content caching strategies for static and dynamic content with appropriate expiration policies, 4) Load balancing for traffic distribution and health monitoring, 5) Request routing using Anycast to direct users to nearest servers. Key components include security measures (DDoS protection, HTTPS enforcement), analytics and monitoring for performance tracking, scalability through horizontal scaling and auto-scaling mechanisms. Benefits include improved performance, reliability, and enhanced user experience through faster load times and responsive design optimization."
+  },
+  {
+    "question": "How would you design a parking garage system?",
+    "answer": "Design involves: 1) Site analysis for location assessment and zoning compliance, 2) Capacity planning for space requirements and future expansion, 3) Layout design maximizing space efficiency with proper ramp design and circulation, 4) Structural design using durable materials with adequate ventilation. Key features include safety measures (lighting, CCTV, fire safety), accessibility compliance (ADA requirements, elevators), aesthetic considerations (facade design, landscaping), and sustainability features (green roofs, solar panels, EV charging stations). Technology integration includes smart parking systems and mobile apps. Management aspects include cost estimation, regulatory approvals, and ongoing maintenance planning."
+  },
+  {
+    "question": "How would you design a vending machine?",
+    "answer": "Design components include: 1) Physical design with appropriate size, durable materials, and accessibility considerations, 2) User interface with touchscreen display, clear product selection, multiple payment options, and language support, 3) Product dispensing mechanism with adjustable shelves and reliable dispensing systems, 4) Technology integration including IoT for remote monitoring, user accounts for loyalty programs, and data analytics. Key features include inventory management with sensors, security measures (tamper-proof design, surveillance), sustainability (eco-friendly materials, energy efficiency), and maintenance considerations (easy access for servicing, customer support). Example: SmartSnack machine with healthy options, multiple payment methods, and real-time inventory tracking."
+  },
+  {
+    "question": "How would you design a distributed key-value store?",
+    "answer": "Architecture includes: 1) Client applications, 2) Nodes (masters/replicas) for storage, 3) Coordinator for request management, 4) Partitioning mechanism using hash-based or range-based distribution, 5) Replication for fault tolerance. Key features include consistent hashing for data distribution, various consistency models (strong vs eventual), fault tolerance through data replication and heartbeat mechanisms, and leader election for master node failures. Performance optimization involves caching, batch operations, and asynchronous processing. API provides simple operations (GET, PUT, DELETE), while monitoring tracks metrics like latency and error rates. Technologies include databases like Cassandra or DynamoDB, consensus algorithms like Raft, and load balancers for distribution."
+  },
+  {
+    "question": "How would you design a distributed cache?",
+    "answer": "Design components include: 1) Client applications, 2) Cache nodes (masters/replicas), 3) Data partitioning using hash-based distribution and consistent hashing, 4) Replication mechanisms (master-slave or multi-master). Key features include various consistency models, fault tolerance through replication and automatic failover, caching strategies (write-through, write-behind, read-through), and eviction policies (LRU, LFU, TTL). Performance optimization involves load balancing, asynchronous operations, and monitoring of cache hit ratios. Technologies include Redis, Memcached, Apache Ignite, and Hazelcast. API provides operations like GET, PUT, DELETE, and INCREMENT. Challenges include managing distributed state consistency and handling network partitions."
+  },
+  {
+    "question": "How would you design an authentication system?",
+    "answer": "Design includes: 1) Authentication methods (password-based, MFA, social login, passwordless), 2) User management (registration, profile management, account recovery), 3) Session management with secure tokens and expiration, 4) Security measures (rate limiting, account lockout, HTTPS, audit logging). Key components include user database design, password hashing using strong algorithms (bcrypt, Argon2), OAuth/OpenID Connect for social login, and JWT for session tokens. Implementation considerations include using established libraries, database design for user data, and scalability planning. Testing involves penetration testing and user acceptance testing. Example flow: registration → email verification → login → MFA prompt → session creation → access control based on user roles and permissions."
+  },
+  {
+    "question": "How would you design a Unified Payments Interface (UPI) system?",
+    "answer": "Architecture includes: 1) User interface (mobile app), 2) Backend server for transaction processing, 3) Banking network connections, 4) Payment gateway, 5) Security layer for encryption. Key features include mobile number verification, two-factor authentication, payment initiation (send money, request money, QR codes), transaction management with real-time status updates, and bank API integration for fund transfers. Security involves encryption, fraud detection, and session management. UX design focuses on intuitive interface, clear onboarding, and feedback mechanisms. Regulatory compliance includes KYC processes and data protection. Technology stack uses React Native/Flutter for frontend, Node.js/Python for backend, and PostgreSQL/MongoDB for databases. Future enhancements include AI for fraud detection, international payments, and loyalty programs."
+  },
+  {
+    "question": "How would you design a messaging app like WhatsApp?",
+    "answer": "Architecture includes: 1) Client applications (mobile/web), 2) Backend server for message handling, 3) Database for user data and messages, 4) Notification service, 5) Media storage for multimedia files. Key features include user registration with phone verification, messaging functionality (one-on-one and group chats, message status indicators), media sharing with compression, user presence and notifications, and end-to-end encryption for security. Technology stack uses React Native for mobile, Node.js/Java for backend, MongoDB/Cassandra for databases, and WebSockets for real-time communication. Security measures include data encryption, user privacy controls, and regular audits. Scalability considerations include load balancing, database sharding, and caching mechanisms."
+  },
+  {
+    "question": "How would you design a music streaming service like Spotify?",
+    "answer": "Architecture includes: 1) Client applications (mobile, desktop, web), 2) Backend services (API gateway, microservices), 3) Database design (relational for user data, NoSQL for recommendations), 4) Streaming service using HTTP range requests and adaptive bitrate, 5) CDN for global content delivery. Key features include user management, music catalog with search functionality, playlist creation and sharing, personalized recommendations using collaborative and content-based filtering, and offline listening capabilities. Technology stack uses React Native/Flutter for mobile, Node.js/Python/Java for backend, MySQL/PostgreSQL for structured data, and MongoDB for unstructured data. Scalability strategies include database sharding, caching, and auto-scaling. Security includes user authentication, data encryption, and rate limiting."
+  },
+  {
+    "question": "How would you design a distributed job scheduler?",
+    "answer": "Architecture includes: 1) Job submission interface (API/CLI), 2) Job queue using message brokers, 3) Resource manager for tracking available nodes, 4) Job scheduler with various algorithms, 5) Worker nodes for execution, 6) Monitoring and logging system. Key features include job submission with parameters, job queueing and prioritization, resource allocation based on requirements, fault tolerance with retry mechanisms and checkpointing. Data flow: job submission → queueing → scheduling → execution → monitoring → completion. Technologies include RabbitMQ/Kafka for queuing, PostgreSQL/MongoDB for metadata, Docker/Kubernetes for worker deployment, and Prometheus/Grafana for monitoring. Scalability considerations include horizontal scaling of workers, dynamic resource allocation, and partitioning of job queues."
+  },
+  {
+    "question": "How would you design a scalable notification service?",
+    "answer": "Architecture includes: 1) Notification service with API gateway, 2) Notification queue using message brokers, 3) Channel processors for different delivery methods (email, SMS, push), 4) User preference service, 5) Scheduler service for future notifications. Key features include multi-channel support, notification types (transactional, promotional, system alerts), scheduled delivery, user preferences management, rate limiting, and retry mechanisms. Data flow: notification request → validation → user preferences check → queueing → processing → delivery tracking. Technologies include Kafka/RabbitMQ for queues, MongoDB for preferences, AWS S3 for storage, and Prometheus/Grafana for monitoring. Scalability involves horizontal scaling, load balancing, and partitioning. Security includes data encryption, rate limiting, and access control."
+  },
+  {
+    "question": "How would you design a social media platform like Instagram?",
+    "answer": "Architecture includes: 1) Client applications, 2) API gateway, 3) Microservices (user, post, feed, comment, like, notification, search), 4) Databases (relational for users, NoSQL for posts), 5) Object storage for media, 6) Caching layer, 7) Load balancer. Key features include user management, photo/video uploads with thumbnail generation, feed generation using fan-out strategies, social interactions (likes, comments, follows), direct messaging, and notifications. Data models include user profiles, posts with metadata, and feed structures. Scalability considerations include database sharding, horizontal scaling, asynchronous processing with message queues, and CDN usage. Security measures include HTTPS, rate limiting, and regular audits. Implementation includes caching for performance and monitoring for system health."
+  },
+  {
+    "question": "How would you design a dating app like Tinder?",
+    "answer": "Architecture includes: 1) Client applications (mobile), 2) API gateway, 3) Microservices (user, matchmaking, chat, notification, discovery), 4) NoSQL database for user profiles, 5) Object storage for images, 6) Load balancer. Key features include user registration with phone verification, profile management with photos and preferences, location-based matching using S2 Geometry library, swiping mechanism with Redis caching, chat functionality using WebSockets, and notifications for matches. Data models include user profiles with location and preferences, and match records. Implementation involves geosharding for location queries, real-time messaging, and scalability through database sharding and horizontal scaling. Security includes HTTPS, rate limiting, and vulnerability monitoring. Performance optimization uses caching and asynchronous processing."
+  },
+  {
+    "question": "How would you design a social media platform like Facebook?",
+    "answer": "Core features include user profiles, friend system, news feed, posts (text, photo, video, links), comments and reactions, messaging, groups and events, notifications, and search functionality. Architecture involves UI design with wireframes and responsive layouts, UX design with intuitive navigation and onboarding, backend architecture using chosen server-side languages and frameworks, and database management with appropriate data models. Technology stack includes frontend frameworks (React, Angular, Vue.js), backend languages (Node.js, Python, Ruby), databases (PostgreSQL, MongoDB), and APIs for communication. Security considerations include data encryption, privacy settings, and regular audits. Scalability involves load balancing, database optimization, and CDN usage. Post-launch activities include continuous improvement, analytics implementation, and community engagement."
+  },
+  {
+    "question": "How would you design a microblogging platform like Twitter?",
+    "answer": "Core features include user profiles, tweeting with character limits, retweets and likes, follow system, real-time timeline/feed, hashtags, mentions, direct messaging, notifications, and search functionality. Architecture involves UI design with responsive layouts, UX design with seamless onboarding and intuitive navigation, backend architecture using appropriate frameworks, and database management. Technology stack includes frontend (React, Angular, Vue.js), backend (Node.js, Python, Ruby), databases (PostgreSQL, MongoDB), and real-time features using WebSockets. Security measures include data encryption, privacy settings, rate limiting, and regular audits. Implementation focuses on simplicity, real-time interaction, and user engagement through effective content categorization and discovery mechanisms."
+  },
+  {
+    "question": "How would you design a discussion platform like Reddit?",
+    "answer": "Key components include UI design (homepage with subreddit listings, post design supporting multiple types, threaded comment sections), UX considerations (onboarding process, intuitive navigation, real-time notifications, mobile responsiveness), and backend architecture (database for user and content data, RESTful API development, WebSocket implementation for real-time features). Features include user profiles, subreddit creation and management, post types (text, images, links, videos, polls), voting system, comment threading with sorting options, moderation tools, and search functionality. Community guidelines and safety features include content policies, user safety measures, and reporting systems. Monetization strategies include advertising and premium memberships. Testing involves user feedback and iterative design improvements."
+  },
+  {
+    "question": "How would you design a video-sharing platform like YouTube?",
+    "answer": "Architecture includes UI design (homepage with featured videos, video player page with controls and information, user profile pages), UX considerations (intuitive navigation, personalization, mobile responsiveness), and backend architecture (database management, video storage and streaming using cloud solutions and CDN, user authentication). Key features include video uploading with multiple format support, content management system with moderation tools, monetization strategies (ad revenue, subscriptions, sponsorships), analytics and reporting for creators, and community features (live streaming, community posts, polls). Technology stack involves robust databases, cloud storage, CDN for fast streaming, and secure authentication systems. The platform focuses on seamless user experience, effective content management, and comprehensive creator tools."
+  }
+]

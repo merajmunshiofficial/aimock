@@ -1,0 +1,17 @@
+{
+  "topic": "JavaScript Fundamentals",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the correct way to declare a variable that cannot be reassigned?",
+      "options": [
+        "var myVar = 10;",
+        "let myVar = 10;",
+        "const myVar = 10;",
+        "immutable myVar = 10;"
+      ],
+      "correctAnswer": 2,
+      "explanation": "The 'const' keyword declares variables that cannot be reassigned."
+    }
+  ]
+}
