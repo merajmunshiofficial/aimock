@@ -1,0 +1,42 @@
+{
+  "topic": "React Basics",
+  "questions": [
+    {
+      "id": 1,
+      "question": "What hook is used to manage local component state in functional components?",
+      "options": [
+        "useContext",
+        "useEffect",
+        "useState",
+        "useReducer"
+      ],
+      "correctAnswer": 2,
+      "explanation": "useState returns a stateful value and a function to update it."
+    },
+    {
+      "id": 2,
+      "question": "Which prop helps React identify which items have changed, are added, or are removed in a list?",
+      "options": [
+        "index",
+        "key",
+        "id",
+        "value"
+      ],
+      "correctAnswer": 1,
+      "explanation": "The key prop should be given to list elements to give them a stable identity."
+    },
+    {
+      "id": 3,
+      "question": "What is the correct method to create a React component class?",
+      "options": [
+        "React.createComponent()",
+        "React.component()",
+        "React.createClass()",
+        "React.Component"
+      ],
+      "correctAnswer": 3,
+      "explanation": "Extend React.Component to create a component class."
+    }
+  ],
+  "totalMCQs": 3
+}

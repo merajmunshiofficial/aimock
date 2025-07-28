@@ -3,9 +3,11 @@ import { useAuth0 } from '@auth0/auth0-react';
 import { Timestamp } from 'firebase/firestore';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useInterview } from '../../interview/hooks/useInterview';
+import { InterviewRecorder } from './InterviewRecorder';
 import { saveInterviewSession } from '../../services/progress.service';
 
 export const InterviewSession: React.FC = () => {
+  const [endRequested, setEndRequested] = useState(false);
   const { sessionId } = useParams<{ sessionId: string }>();
   const { user } = useAuth0();
   const [searchParams] = useSearchParams();
@@ -60,31 +62,44 @@ export const InterviewSession: React.FC = () => {
   };
   
   const handleEndInterview = async () => {
-    // Evaluate first
-
-    await evaluateInterviewPerformance();
-
-    // Persist session if user authenticated and sessionId exists
-    try {
-      if (user?.sub) {
-        await saveInterviewSession(user.sub, {
-          sessionId: sessionId || crypto.randomUUID(),
-          topic: topics.join(', '),
-          score: (evaluationResult?.overallScore ?? 0) as number,
-          startedAt,
-          finishedAt: Timestamp.now(),
-          transcript: userAnswers.join('\n'),
-          feedback: aiResponses.join('\n'),
-          evaluation: evaluationResult
-        });
-      }
-    } catch (err) {
-      console.warn('Failed to save session', err);
-    }
-
-    navigate(`/interview/results/${sessionId || 'new'}`);
-  };
+    setEndRequested(true);
   
+    // If user has answered at least one question, submit the current answer first
+    if (userAnswer.trim()) {
+      await submitAnswer(userAnswer);
+      setUserAnswer('');
+    }
+  
+    // Then evaluate the interview
+    await evaluateInterviewPerformance();
+  };
+
+  // Persist and navigate after evaluation ready
+  useEffect(() => {
+    const persistAndNavigate = async () => {
+      if (endRequested && !isEvaluating && evaluationResult) {
+        const id = sessionId ?? crypto.randomUUID();
+        try {
+          if (user?.sub) {
+            await saveInterviewSession(user.sub, {
+              sessionId: id,
+              topic: topics.join(', '),
+              score: (evaluationResult?.overallScore ?? 0) as number,
+              startedAt,
+              finishedAt: Timestamp.now(),
+              transcript: userAnswers.join('\n'),
+              feedback: aiResponses.join('\n'),
+              evaluation: evaluationResult
+            });
+          }
+        } catch (err) {
+          console.warn('Failed to save session', err);
+        }
+        navigate(`/interview/results/${id}`);
+      }
+    };
+    persistAndNavigate();
+  }, [endRequested, isEvaluating, evaluationResult, user?.sub, sessionId, startedAt, topics, userAnswers, aiResponses, navigate]);  
   // Loading state
   if (isLoading) {
     return (
@@ -112,6 +127,10 @@ export const InterviewSession: React.FC = () => {
   return (
     <div className="min-h-screen bg-base-200 p-4">
       <div className="container mx-auto max-w-4xl">
+          {/* Recorder preview */}
+          <div className="mb-8">
+            <InterviewRecorder />
+          </div>
         <div className="card bg-base-100 shadow-xl">
           <div className="card-body">
             <div className="flex justify-between items-center mb-6">

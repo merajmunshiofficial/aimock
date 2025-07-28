@@ -148,8 +148,10 @@ export const useInterview = () => {
     }));
     
     try {
-      const questions = state.questions.map(q => q.question);
-      const correctAnswers = state.questions.map(q => q.answer);
+      // Use only the questions the user has actually answered
+      const answeredCount = state.userAnswers.length;
+      const questions = state.questions.slice(0, answeredCount).map(q => q.question);
+      const correctAnswers = state.questions.slice(0, answeredCount).map(q => q.answer);
       
       const evaluation = await evaluateInterview(
         questions,

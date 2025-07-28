@@ -8,7 +8,7 @@ const PERPLEXITY_API_URL = 'https://api.perplexity.ai/chat/completions';
 export type ApiProvider = 'openai' | 'perplexity';
 
 export interface InterviewEvaluation {
-  score: number;
+  overallScore: number;
   feedback: string;
   strengths: string[];
   weaknesses: string[];
@@ -137,7 +137,7 @@ export const evaluateInterview = async (
     const evaluationResult = JSON.parse(data.choices[0].message.content);
     
     return {
-      score: evaluationResult.score,
+      overallScore: evaluationResult.score,
       feedback: evaluationResult.feedback,
       strengths: evaluationResult.strengths,
       weaknesses: evaluationResult.weaknesses

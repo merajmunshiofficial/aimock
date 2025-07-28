@@ -11,12 +11,14 @@ import { InterviewSetup } from './components/Interview/InterviewSetup';
 import { InterviewSession } from './components/Interview/InterviewSession';
 import { InterviewResults } from './components/Interview/InterviewResults';
 import { InterviewHistory } from './components/Dashboard/InterviewHistory';
-import { StudyMaterials } from './components/Dashboard/StudyMaterials';
+import { StudyMaterials } from './components/Study/StudyMaterials';
 import { ProfileSettings } from './components/Profile/ProfileSettings';
 import { RecordingManager } from './components/Recording/RecordingManager';
 import { NotFound } from './components/Common/NotFound';
 import { TutorialViewer } from './components/Study/TutorialViewer';
 import { QuestionViewer } from './components/Study/QuestionViewer';
+import { MCQTest } from './components/Study/MCQTest';
+import { MCQResults } from './components/Study/MCQResults';
 
 // Main App Content Component
 const AppContent: React.FC = () => {
@@ -107,11 +109,6 @@ const AppContent: React.FC = () => {
           </div>
         )}
 
-        {/* Test Component for Tailwind and DaisyUI */}
-        <div className="p-4">
-          <p className="text-red-500">If you see red text, Tailwind is working.</p>
-          <button className="btn btn-primary">If this is styled like a DaisyUI button, DaisyUI is working.</button>
-        </div>
 
         <Routes>
           {/* Public Routes */}
@@ -129,6 +126,8 @@ const AppContent: React.FC = () => {
             {/* Dashboard Routes */}
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="study" element={<StudyMaterials />} />
+<Route path="study/mcq-test/:topic" element={<MCQTest />} />
+<Route path="study/mcq-results/:topic" element={<MCQResults />} />
             <Route path="study/tutorial/:topic" element={<TutorialViewer />} />
             <Route path="study/questions/:topic" element={<QuestionViewer />} />
             <Route path="profile" element={<ProfileSettings />} />

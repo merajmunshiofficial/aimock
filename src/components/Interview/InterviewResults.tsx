@@ -21,8 +21,8 @@ interface EvaluationResult {
   questionsAnswered?: number;
   totalTime?: string;
   skills: EvaluationSkill[];
-  keyTakeaways: string[];
-  feedback: EvaluationFeedbackItem[];
+  keyTakeaways?: string[];
+  feedback?: EvaluationFeedbackItem[];
 }
 
 export const InterviewResults: React.FC = () => {
@@ -121,35 +121,83 @@ export const InterviewResults: React.FC = () => {
                 </div>
               </div>
 
-              {/* Skills Assessment */}
-              <div className="card bg-base-200">
-                <div className="card-body">
-                  <h2 className="card-title text-2xl mb-4">Skills Assessment</h2>
-                  <div className="space-y-4">
-                    {results.skills.map((skill: EvaluationSkill, index: number) => (
-                      <div key={index} className="space-y-2">
-                        <div className="flex justify-between items-center">
-                          <span className="font-medium">{skill.name}</span>
-                          <span className="text-sm text-base-content/60">{skill.score}%</span>
+              {/* Skills Assessment / Strengths */}
+              {results.skills?.length ? (
+                <div className="card bg-base-200">
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl mb-4">Skills Assessment</h2>
+                    <div className="space-y-4">
+                      {results.skills.map((skill: EvaluationSkill, index: number) => (
+                        <div key={index} className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="font-medium">{skill.name}</span>
+                            <span className="text-sm text-base-content/60">{skill.score}%</span>
+                          </div>
+                          <div className="w-full bg-base-300 rounded-full h-2.5">
+                            <div 
+                              className="bg-primary h-2.5 rounded-full" 
+                              style={{ width: `${skill.score}%` }}
+                            ></div>
+                          </div>
                         </div>
-                        <div className="w-full bg-base-300 rounded-full h-2.5">
-                          <div 
-                            className="bg-primary h-2.5 rounded-full" 
-                            style={{ width: `${skill.score}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="card bg-base-200">
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl mb-4">Strengths</h2>
+                    <ul className="list-disc list-inside space-y-2">
+                      {(results as any).strengths?.map((s: string, idx: number) => (
+                        <li key={idx}>{s}</li>
+                      )) ?? <li>No strengths identified.</li>}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {/* Key Takeaways / Weaknesses */}
+              {results.keyTakeaways?.length ? (
+                <div className="card bg-base-200">
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl mb-4">Key Takeaways</h2>
+                    <ul className="list-disc list-inside space-y-2">
+                      {(results.keyTakeaways ?? []).map((takeaway: string, index: number) => (
+                        <li key={index} className="text-base-content/80">{takeaway}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ) : (
+                <div className="card bg-base-200">
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl mb-4">Areas for Improvement</h2>
+                    <ul className="list-disc list-inside space-y-2">
+                      {(results as any).weaknesses?.map((w: string, idx: number) => (
+                        <li key={idx}>{w}</li>
+                      )) ?? <li>No weaknesses provided.</li>}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              {/* Summary Feedback */}
+              { (results as any).feedback && typeof (results as any).feedback === 'string' && (
+                <div className="card bg-base-200">
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl mb-4">Overall Feedback</h2>
+                    <p>{(results as any).feedback}</p>
+                  </div>
+                </div>
+              )}
               
               {/* Key Takeaways */}
               <div className="card bg-base-200">
                 <div className="card-body">
                   <h2 className="card-title text-2xl mb-4">Key Takeaways</h2>
                   <ul className="list-disc list-inside space-y-2">
-                    {results.keyTakeaways.map((takeaway: string, index: number) => (
+                    {(results.keyTakeaways ?? []).map((takeaway: string, index: number) => (
                       <li key={index} className="text-base-content/80">{takeaway}</li>
                     ))}
                   </ul>
@@ -157,30 +205,32 @@ export const InterviewResults: React.FC = () => {
               </div>
               
               {/* Detailed Feedback */}
-              <div className="card bg-base-200">
-                <div className="card-body">
-                  <h2 className="card-title text-2xl mb-4">Detailed Feedback</h2>
-                  <div className="space-y-6">
-                    {results.feedback.map((item: EvaluationFeedbackItem, index: number) => (
-                      <div key={index} className="space-y-3">
-                        <div className="font-bold">Question {index + 1}: {item.question}</div>
-                        <div className="card bg-base-300">
-                          <div className="card-body p-4">
-                            <div className="font-medium mb-1">Your Answer:</div>
-                            <p>{item.userAnswer}</p>
+              {Array.isArray(results.feedback) && results.feedback.length > 0 && (
+                <div className="card bg-base-200">
+                  <div className="card-body">
+                    <h2 className="card-title text-2xl mb-4">Detailed Feedback</h2>
+                    <div className="space-y-6">
+                      {results.feedback.map((item: EvaluationFeedbackItem, index: number) => (
+                        <div key={index} className="space-y-3">
+                          <div className="font-bold">Question {index + 1}: {item.question}</div>
+                          <div className="card bg-base-300">
+                            <div className="card-body p-4">
+                              <div className="font-medium mb-1">Your Answer:</div>
+                              <p>{item.userAnswer}</p>
+                            </div>
+                          </div>
+                          <div className="card bg-base-300">
+                            <div className="card-body p-4">
+                              <div className="font-medium mb-1">AI Feedback:</div>
+                              <p>{item.aiFeedback}</p>
+                            </div>
                           </div>
                         </div>
-                        <div className="card bg-base-300">
-                          <div className="card-body p-4">
-                            <div className="font-medium mb-1">AI Feedback:</div>
-                            <p>{item.aiFeedback}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
               
               {/* Actions */}
               <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
