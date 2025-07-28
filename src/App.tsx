@@ -10,6 +10,7 @@ import { Dashboard } from './components/Dashboard/Dashboard';
 import { InterviewSetup } from './components/Interview/InterviewSetup';
 import { InterviewSession } from './components/Interview/InterviewSession';
 import { InterviewResults } from './components/Interview/InterviewResults';
+import { InterviewHistory } from './components/Dashboard/InterviewHistory';
 import { StudyMaterials } from './components/Dashboard/StudyMaterials';
 import { ProfileSettings } from './components/Profile/ProfileSettings';
 import { RecordingManager } from './components/Recording/RecordingManager';
@@ -132,6 +133,7 @@ const AppContent: React.FC = () => {
             <Route path="study/questions/:topic" element={<QuestionViewer />} />
             <Route path="profile" element={<ProfileSettings />} />
             <Route path="recordings" element={<RecordingManager />} />
+            <Route path="history" element={<InterviewHistory />} />
             
             {/* Interview Routes */}
             <Route path="interview">

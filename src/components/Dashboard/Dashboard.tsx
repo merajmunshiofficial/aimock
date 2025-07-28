@@ -1,29 +1,68 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
-import { useAppContext } from '../../contexts/AppContext';
+import { listInterviewSessions, InterviewSessionRecord } from '../../services/progress.service';
+
 import { LoadingSpinner } from '../Common/LoadingSpinner';
+
+interface DashboardStats {
+  totalInterviews: number;
+  completedInterviews: number;
+  averageScore: number;
+  totalStudyTime: number;
+  favoriteTopics: string[];
+  recentActivity: { title: string; description: string; timestamp: number }[];
+}
 
 export const Dashboard: React.FC = () => {
   const { user, logout } = useAuth0();
-  const { state } = useAppContext();
 
-  if (!user) {
+
+  const [sessions, setSessions] = useState<InterviewSessionRecord[]>([]);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAndCompute = async () => {
+      if (!user?.sub) return;
+      const data = await listInterviewSessions(user.sub, 100);
+      setSessions(data);
+
+      // Compute stats
+      const totalInterviews = data.length;
+      const completedInterviews = data.length; // all saved sessions are completed
+      const averageScore = data.length ? Math.round(data.reduce((sum, s) => sum + (s.score || 0), 0) / data.length) : 0;
+      const favoriteCount: Record<string, number> = {};
+      data.forEach((s) => {
+        s.topic.split(',').forEach((t) => {
+          const key = t.trim();
+          if (key) favoriteCount[key] = (favoriteCount[key] || 0) + 1;
+        });
+      });
+      const favoriteTopics = Object.entries(favoriteCount)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3)
+        .map(([t]) => t);
+
+      const recentActivity = data.slice(0, 5).map((s) => ({
+        title: 'Interview Completed',
+        description: s.topic,
+        timestamp: s.finishedAt.toMillis()
+      }));
+
+      setStats({ totalInterviews, completedInterviews, averageScore, totalStudyTime: 0, favoriteTopics, recentActivity });
+      setLoading(false);
+    };
+    fetchAndCompute();
+  }, [user]);
+
+  if (!user || loading || !stats) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinner size="lg" text="Loading dashboard..." />
       </div>
     );
   }
-
-  const stats = state.dashboardStats || {
-    totalInterviews: 0,
-    completedInterviews: 0,
-    averageScore: 0,
-    totalStudyTime: 0,
-    favoriteTopics: [],
-    recentActivity: []
-  };
 
   return (
     <div className="min-h-screen bg-base-200">

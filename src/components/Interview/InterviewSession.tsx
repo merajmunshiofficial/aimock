@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
+import { Timestamp } from 'firebase/firestore';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useInterview } from '../../interview/hooks/useInterview';
+import { saveInterviewSession } from '../../services/progress.service';
 
 export const InterviewSession: React.FC = () => {
   const { sessionId } = useParams<{ sessionId: string }>();
+  const { user } = useAuth0();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [userAnswer, setUserAnswer] = useState('');
+  const [startedAt] = useState(() => Timestamp.now());
   
   // Get interview configuration from URL parameters
   const searchParamsString = searchParams.toString();
@@ -29,6 +34,7 @@ export const InterviewSession: React.FC = () => {
     submitAnswer,
     continueInterview,
     evaluateInterviewPerformance,
+    evaluationResult,
     currentQuestion
   } = useInterview();
   
@@ -54,7 +60,28 @@ export const InterviewSession: React.FC = () => {
   };
   
   const handleEndInterview = async () => {
+    // Evaluate first
+
     await evaluateInterviewPerformance();
+
+    // Persist session if user authenticated and sessionId exists
+    try {
+      if (user?.sub) {
+        await saveInterviewSession(user.sub, {
+          sessionId: sessionId || crypto.randomUUID(),
+          topic: topics.join(', '),
+          score: (evaluationResult?.overallScore ?? 0) as number,
+          startedAt,
+          finishedAt: Timestamp.now(),
+          transcript: userAnswers.join('\n'),
+          feedback: aiResponses.join('\n'),
+          evaluation: evaluationResult
+        });
+      }
+    } catch (err) {
+      console.warn('Failed to save session', err);
+    }
+
     navigate(`/interview/results/${sessionId || 'new'}`);
   };
   
