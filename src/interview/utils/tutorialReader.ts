@@ -8,7 +8,14 @@ export const readTutorial = async (topic: string): Promise<string> => {
     // Dynamically import the markdown file using the topic directly.
     // The topic should now match the filename without the .md extension.
     // Webpack returns the URL of the file; fetch its raw text.
-    const module = await import(`../../data/tutorials/${topic}.md`);
+    let module;
+    try {
+      module = await import(`../../data/tutorials/${topic}.md`);
+    } catch {
+      // fallback: replace spaces with underscores (e.g., 'Spring Boot' -> 'Spring_Boot')
+      const sanitized = topic.replace(/\s+/g, '_');
+      module = await import(`../../data/tutorials/${sanitized}.md`);
+    }
     const url = module.default as string;
     const response = await fetch(url);
     if (!response.ok) {
