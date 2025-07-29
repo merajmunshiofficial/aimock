@@ -1,20 +1,30 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Timestamp } from 'firebase/firestore';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useInterview } from '../../interview/hooks/useInterview';
+import { useSpeech } from '../../interview/hooks/useSpeech';
 import { InterviewRecorder } from './InterviewRecorder';
 import { saveInterviewSession } from '../../services/progress.service';
 
 export const InterviewSession: React.FC = () => {
+  const {
+    transcript,
+    listening,
+    startListening,
+    stopListening,
+    resetTranscript,
+    speak,
+    browserSupportsSpeechRecognition,
+  } = useSpeech({ continuous: true });
   const [endRequested, setEndRequested] = useState(false);
   const { sessionId } = useParams<{ sessionId: string }>();
   const { user } = useAuth0();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [userAnswer, setUserAnswer] = useState('');
-  const [startedAt] = useState(() => Timestamp.now());
-  
+  const silenceTimerRef = useRef<NodeJS.Timeout | null>(null);
+
   // Get interview configuration from URL parameters
   const searchParamsString = searchParams.toString();
   const topics = useMemo(() => searchParams.get('topics')?.split(',') || [], [searchParamsString]);
@@ -39,6 +49,80 @@ export const InterviewSession: React.FC = () => {
     evaluationResult,
     currentQuestion
   } = useInterview();
+
+  // Handle submit answer function (after useInterview to access submitAnswer)
+  const handleSubmitAnswer = useCallback(async () => {
+    if (!userAnswer.trim()) return;
+    
+    // Stop listening and clear timers
+    if (listening) {
+      stopListening();
+    }
+    if (silenceTimerRef.current) {
+      clearTimeout(silenceTimerRef.current);
+      silenceTimerRef.current = null;
+    }
+    
+    await submitAnswer(userAnswer);
+    setUserAnswer('');
+  }, [userAnswer, listening, stopListening, submitAnswer]);
+
+  // Sync speech transcript and handle auto-submit on silence
+  useEffect(() => {
+    if (transcript) {
+      console.log('📝 Transcript updated:', transcript);
+      setUserAnswer(transcript);
+      
+      // Clear existing timer
+      if (silenceTimerRef.current) {
+        clearTimeout(silenceTimerRef.current);
+      }
+      
+      // Set new timer for auto-submit after 2 seconds of silence
+      const timer = setTimeout(() => {
+        if (transcript.trim() && listening) {
+          console.log('⏰ Auto-submitting after silence');
+          handleSubmitAnswer();
+        }
+      }, 2000);
+      
+      silenceTimerRef.current = timer;
+    }
+  }, [transcript, listening, handleSubmitAnswer]);
+
+  // Auto conversation flow: speak question then start listening
+  useEffect(() => {
+    if (!currentQuestion) return;
+
+    const startConversation = async () => {
+      console.log('🎯 Starting conversation for question:', currentQuestion.question);
+      console.log('🎤 Browser supports speech recognition:', browserSupportsSpeechRecognition);
+      console.log('🔊 Speech synthesis available:', 'speechSynthesis' in window);
+      
+      // Clear previous state
+      setUserAnswer('');
+      resetTranscript();
+      
+      try {
+        // Speak question and wait for completion
+        console.log('🔊 Speaking question...');
+        await speak(currentQuestion.question);
+        console.log('✅ Question spoken, starting to listen...');
+        
+        // Auto-start listening after question finishes
+        if (browserSupportsSpeechRecognition) {
+          startListening();
+          console.log('🎤 Listening started');
+        } else {
+          console.warn('❌ Speech recognition not supported');
+        }
+      } catch (error) {
+        console.error('❌ Error in conversation flow:', error);
+      }
+    };
+
+    startConversation();
+  }, [currentQuestion?.question]); // Only depend on question text to avoid infinite loop
   
   // Handle initialization
   useEffect(() => {
@@ -54,20 +138,12 @@ export const InterviewSession: React.FC = () => {
     }
   }, [sessionId, topics, selectionMode, apiProvider, isInterviewActive, startInterview]);
   
-  const handleSubmitAnswer = async () => {
-    if (userAnswer.trim()) {
-      await submitAnswer(userAnswer);
-      setUserAnswer('');
-    }
-  };
-  
   const handleEndInterview = async () => {
     setEndRequested(true);
   
     // If user has answered at least one question, submit the current answer first
     if (userAnswer.trim()) {
-      await submitAnswer(userAnswer);
-      setUserAnswer('');
+      await handleSubmitAnswer();
     }
   
     // Then evaluate the interview
@@ -85,7 +161,7 @@ export const InterviewSession: React.FC = () => {
               sessionId: id,
               topic: topics.join(', '),
               score: (evaluationResult?.overallScore ?? 0) as number,
-              startedAt,
+              startedAt: Timestamp.now(),
               finishedAt: Timestamp.now(),
               transcript: userAnswers.join('\n'),
               feedback: aiResponses.join('\n'),
@@ -99,7 +175,7 @@ export const InterviewSession: React.FC = () => {
       }
     };
     persistAndNavigate();
-  }, [endRequested, isEvaluating, evaluationResult, user?.sub, sessionId, startedAt, topics, userAnswers, aiResponses, navigate]);  
+  }, [endRequested, isEvaluating, evaluationResult, user?.sub, sessionId, topics, userAnswers, aiResponses, navigate]);  
   // Loading state
   if (isLoading) {
     return (
@@ -177,30 +253,27 @@ export const InterviewSession: React.FC = () => {
                 
                 <div className="card bg-base-200">
                   <div className="card-body">
-                    <h2 className="card-title text-xl mb-4">Your Answer</h2>
-                    <textarea
-                      className="textarea textarea-bordered w-full h-32"
-                      placeholder="Type your answer here..."
-                      value={userAnswer}
-                      onChange={(e) => setUserAnswer(e.target.value)}
-                      disabled={isEvaluating}
-                    />
-                    
-                    <div className="flex justify-between mt-4">
-                      <button 
-                        className="btn btn-outline"
-                        onClick={() => setUserAnswer('')}
+                    <h2 className="card-title text-xl mb-4">Your Answer {listening && <span className="badge badge-error">🎤 Listening...</span>}</h2>
+                    <div className="relative">
+                      <textarea
+                        className="textarea textarea-bordered w-full h-32"
+                        placeholder="Speak your answer after the question finishes..."
+                        value={userAnswer}
+                        readOnly
                         disabled={isEvaluating}
-                      >
-                        Clear
-                      </button>
-                      <button 
-                        className="btn btn-primary"
-                        onClick={handleSubmitAnswer}
-                        disabled={isEvaluating || !userAnswer.trim()}
-                      >
-                        Submit Answer
-                      </button>
+                      />
+                    </div>
+                    
+                    <div className="text-sm text-base-content/60 mt-2">
+                      {listening ? (
+                        <span className="text-error">🎤 Listening... Speak your answer. Will auto-submit after 2 seconds of silence.</span>
+                      ) : (
+                        <span>Waiting for next question...</span>
+                      )}
+                      <div className="mt-1 text-xs">
+                        Speech Recognition: {browserSupportsSpeechRecognition ? '✅ Supported' : '❌ Not Supported'} | 
+                        Speech Synthesis: {'speechSynthesis' in window ? '✅ Available' : '❌ Not Available'}
+                      </div>
                     </div>
                   </div>
                 </div>
